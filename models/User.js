@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database.js');
 const Offer = require('./Offer');
+const Game = require('./Game');
 const User = db.define("user", {
     username:{
         type: Sequelize.STRING
@@ -18,9 +19,5 @@ const User = db.define("user", {
 }, {
     timestamps: false
 });
-
-    User.hasMany(Offer, {
-        as: 'offers'
-      });
 
 module.exports = User;

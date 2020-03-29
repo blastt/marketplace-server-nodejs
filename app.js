@@ -5,6 +5,7 @@ const path = require('path');
 var cors = require('cors');
 
 const db = require('./config/database.js');
+const models = require('./models');
   //test db
 
 db.authenticate()

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database.js');
+const Game = require('./Game');
 
 const Offer = db.define("offer", {
     header:{
@@ -15,8 +16,6 @@ const Offer = db.define("offer", {
 }, {
     timestamps: false
 });
-
-    //Offer.belongsTo(User);
 
 
 module.exports = Offer;

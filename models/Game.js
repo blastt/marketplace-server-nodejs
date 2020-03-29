@@ -12,8 +12,4 @@ const Game = db.define("game", {
     timestamps: false
 });
 
-Game.hasMany(Offer, {
-    as: 'offers'
-});
-
 module.exports = Game;

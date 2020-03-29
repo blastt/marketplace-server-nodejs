@@ -10,6 +10,30 @@ router.get('/', (req, res) => {
     .then(err => console.log(err))
 })
 
+router.get('/:id', (req, res, next) => {
+    
+    const gameId = req.params.id;
+    if (isNaN(gameId)) {
+        next();
+    }
+        Game.findOne({ where: { id: gameId } })
+        .then(game => {
+            res.json(game);
+        })
+        .catch((err) => console.log(err));
+    
+    
+});
+
+router.get('/:name', (req, res) => {
+    const gamename = req.params.name;
+    Game.findOne({ where: { name: gamename } })
+        .then(game => {
+            res.json(game);
+        })
+        .catch((err) => console.log(err));
+});
+
 router.post('/add', (req, res) => {
     let {name, value} = req.body;
 
