@@ -7,10 +7,9 @@ const { check, validationResult } = require('express-validator');
 
 
 
-router.get('/:id', (req, res) => {
-
+router.get('/:id', (req, res, next) => {
     Offer.findOne({
-        where: { header: 'test143' },
+        where: { id: req.params.id },
         include: [
             { model: User },
             { model: Game }
@@ -21,21 +20,10 @@ router.get('/:id', (req, res) => {
             console.log(offer.user);
             res.json(offer);
         })
-        .catch((err) => console.log(err));
-});
-
-router.get('/', (req, res) => {
-    Offer.findAll({
-        include: [
-            { model: User },
-            { model: Game }
-        ]            
-    })
-        .then(offers => {
-
-            res.json(offers);
-        })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            console.log(err);
+            next();
+        });
 });
 
 router.post('/add', (req, res) => {
@@ -44,19 +32,29 @@ router.post('/add', (req, res) => {
     Game.findOne({ where: { name: gamename } })
         .then(game => {
             Offer.create({ header, description, price })
-                .then(offer => {
-                    offer.createGame(game)
-                        .then(game => {
-                            game => res.redirect('/offers');
-                        })
-                        .catch(err => console.log(err))
-                    console.log('yes3');
-                })
+                .then(offer =>  offer.createGame(game))
+                .then(() => res.redirect('/offers'))
                 .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
 
 })
+
+router.get('/', (req, res) => {
+    Offer.findAll({
+        include: [
+            { model: User },
+            { model: Game }
+        ]
+    })
+        .then(offers => {
+
+            res.json(offers);
+        })
+        .catch((err) => console.log(err));
+});
+
+
 
 router.delete('/:id', (req, res) => {
     res.json('success ' + req.params.id);

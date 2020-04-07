@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
     .then(users => {
         res.send(users)
     })
-    .then(err => console.log(err))
+    .catch(err => console.log(err))
 });
 
 router.get('/:id', (req, res) => {
