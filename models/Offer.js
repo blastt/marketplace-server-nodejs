@@ -1,16 +1,24 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database.js');
-const Game = require('./Game');
 
 const Offer = db.define("offer", {
-    header:{
+    header: {
         type: Sequelize.STRING
     },
-    description:{
+    description: {
         type: Sequelize.STRING
     },
-    price:{
+    accountLogin: {
         type: Sequelize.STRING
+    },
+    sellerPaysCharge: {
+        type: Sequelize.BOOLEAN
+    },
+    accountCreatedDate: {
+        type: Sequelize.DATEONLY
+    },
+    price: {
+        type: Sequelize.DECIMAL
     }
     
 }, {

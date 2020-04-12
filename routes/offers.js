@@ -32,7 +32,7 @@ router.post('/add', (req, res) => {
     Game.findOne({ where: { name: gamename } })
         .then(game => {
             Offer.create({ header, description, price })
-                .then(offer =>  offer.createGame(game))
+                .then(offer => offer.createGame(game))
                 .then(() => res.redirect('/offers'))
                 .catch(err => console.log(err));
         })
@@ -41,11 +41,20 @@ router.post('/add', (req, res) => {
 })
 
 router.get('/', (req, res) => {
+    //const game = req.query.game;
     Offer.findAll({
         include: [
-            { model: User },
-            { model: Game }
-        ]
+            {
+                model: User
+            },
+            {
+                model: Game,
+                // where: {
+                //     name: game
+                // }
+            }
+        ],
+
     })
         .then(offers => {
 
