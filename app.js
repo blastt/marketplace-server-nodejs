@@ -4,13 +4,13 @@ const bodyParser = require('body-parser');
 const path = require('path');
 var cors = require('cors');
 
-const db = require('./config/database.js');
-const models = require('./models');
+//const db = require('./config/database.js');
+
   //test db
 
-db.authenticate()
-.then(() => console.log("DB Connected"))
-.catch(err => console.log('Error: ' + err))
+//db.authenticate()
+// .then(() => console.log("DB Connected"))
+// .catch(err => console.log('Error: ' + err))
 const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));

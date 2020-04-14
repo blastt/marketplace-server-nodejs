@@ -1,18 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const Offer = require('../models/Offer');
-const User = require('../models/User');
-const Game = require('../models/Game');
+const db = require('../config/database');
 const { check, validationResult } = require('express-validator');
 
 
 
 router.get('/:id', (req, res, next) => {
-    Offer.findOne({
+    db.Offer.findOne({
         where: { id: req.params.id },
         include: [
-            { model: User },
-            { model: Game }
+            { model: db.User },
+            { model: db.Game }
         ]
     })
         .then(offer => {
@@ -29,9 +27,9 @@ router.get('/:id', (req, res, next) => {
 router.post('/add', (req, res) => {
     let { header, description, price, gamename } = req.body;
 
-    Game.findOne({ where: { name: gamename } })
+    db.Game.findOne({ where: { name: gamename } })
         .then(game => {
-            Offer.create({ header, description, price })
+            db.Offer.create({ header, description, price })
                 .then(offer => offer.createGame(game))
                 .then(() => res.redirect('/offers'))
                 .catch(err => console.log(err));
@@ -42,13 +40,13 @@ router.post('/add', (req, res) => {
 
 router.get('/', (req, res) => {
     //const game = req.query.game;
-    Offer.findAll({
+    db.Offer.findAll({
         include: [
             {
-                model: User
+                model: db.User
             },
             {
-                model: Game,
+                model: db.Game,
                 // where: {
                 //     name: game
                 // }

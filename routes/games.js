@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Game = require('../models/Game');
+const db = require('../config/database');
 
 router.get('/', (req, res) => {
-    Game.findAll()
+    db.Game.findAll()
     .then(games => {
         res.send(games)
     })
@@ -16,7 +16,7 @@ router.get('/:id', (req, res, next) => {
     if (isNaN(gameId)) {
         next();
     }
-        Game.findOne({ where: { id: gameId } })
+    db.Game.findOne({ where: { id: gameId } })
         .then(game => {
             res.json(game);
         })
@@ -27,7 +27,7 @@ router.get('/:id', (req, res, next) => {
 
 router.get('/:name', (req, res) => {
     const gamename = req.params.name;
-    Game.findOne({ where: { name: gamename } })
+    db.Game.findOne({ where: { name: gamename } })
         .then(game => {
             res.json(game);
         })
@@ -37,7 +37,7 @@ router.get('/:name', (req, res) => {
 router.post('/add', (req, res) => {
     let {name, value} = req.body;
 
-    Game.create({
+    db.Game.create({
         name,
         value 
     })
