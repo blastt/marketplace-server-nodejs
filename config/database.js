@@ -4,7 +4,7 @@ const UserModel = require('../models/User');
 const GameModel = require('../models/Game');
 const ImageModel = require('../models/Image');
 
-const sequelize = new Sequelize('mydb', 'postgres', 'dijid82adssa', {
+const sequelize = new Sequelize('db_development', 'postgres', 'dijid82adssa', {
     host: 'localhost',
     dialect: 'postgres',
 });

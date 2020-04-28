@@ -22,7 +22,6 @@ router.get('/:id', (req, res, next) => {
         })
         .catch((err) => console.log(err));
     
-    
 });
 
 router.get('/:name', (req, res) => {

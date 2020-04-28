@@ -55,7 +55,6 @@ router.get('/', (req, res) => {
 
     })
         .then(offers => {
-
             res.json(offers);
         })
         .catch((err) => console.log(err));
