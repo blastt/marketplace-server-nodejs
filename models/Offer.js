@@ -1,5 +1,10 @@
 module.exports = (db, Sequelize) => {
     return db.define("offer", {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         header: {
             type: Sequelize.STRING
         },

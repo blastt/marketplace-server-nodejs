@@ -24,18 +24,20 @@ router.get('/:id', (req, res, next) => {
         });
 });
 
-router.post('/add', (req, res) => {
-    let { header, description, price, gamename } = req.body;
+router.post('/add', async (req, res) => {
+    let { header, description, accountLogin, sellerPaysCharge, accountCreatedDate, price, games } = req.body;
 
-    db.Game.findOne({ where: { name: gamename } })
-        .then(game => {
-            db.Offer.create({ header, description, price })
-                .then(offer => offer.createGame(game))
-                .then(() => res.redirect('/offers'))
-                .catch(err => console.log(err));
+    let foundGames = await db.Game.findAll({ where: { value: games } })
+
+    db.Offer.create({ header, description, accountLogin, sellerPaysCharge, accountCreatedDate, price, userId: 1 })
+        .then(offer => {
+            let ids = foundGames.map((el) => el.id);
+            offer.addGames(ids);           
+        })
+        .then((data) => {
+            res.redirect('/offers');
         })
         .catch(err => console.log(err));
-
 })
 
 router.get('/', (req, res) => {

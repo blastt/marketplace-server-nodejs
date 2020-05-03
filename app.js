@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 var cors = require('cors');
 
+
 //const db = require('./config/database.js');
 
   //test db
@@ -12,10 +13,11 @@ var cors = require('cors');
 // .then(() => console.log("DB Connected"))
 // .catch(err => console.log('Error: ' + err))
 const app = express();
+app.use(bodyParser.json());
 app.use(cors());
-app.use(bodyParser.urlencoded({extended: false}));
+//app.use(bodyParser.urlencoded({extended: false}));
 app.use(require('./routes'));
-app.use(express.json());
+
 app.get('/', (req, res) => {
     res.send('INDEX');
 });
