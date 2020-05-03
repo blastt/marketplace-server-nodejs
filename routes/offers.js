@@ -26,13 +26,12 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/add', async (req, res) => {
     let { header, description, accountLogin, sellerPaysCharge, accountCreatedDate, price, games } = req.body;
-
     let foundGames = await db.Game.findAll({ where: { value: games } })
 
     db.Offer.create({ header, description, accountLogin, sellerPaysCharge, accountCreatedDate, price, userId: 1 })
         .then(offer => {
             let ids = foundGames.map((el) => el.id);
-            offer.addGames(ids);           
+            offer.addGames(ids);
         })
         .then((data) => {
             res.redirect('/offers');
@@ -41,21 +40,26 @@ router.post('/add', async (req, res) => {
 })
 
 router.get('/', (req, res) => {
+    let { game, priceFrom, priceTo } = req.query;
+    let options = { where: {}};
+    let gameOptions;
+    if (game) {
+        gameOptions = { value:  game }
+    }
+    if (priceFrom && priceTo) {
+        options.where.price = { $between: [priceFrom, priceTo] }
+    }
+    options.include = [
+        {
+            model: db.User,          
+        },
+        {
+            model: db.Game,
+            where: gameOptions
+        }
+    ]
     //const game = req.query.game;
-    db.Offer.findAll({
-        include: [
-            {
-                model: db.User
-            },
-            {
-                model: db.Game,
-                // where: {
-                //     name: game
-                // }
-            }
-        ],
-
-    })
+    db.Offer.findAll(options)
         .then(offers => {
             res.json(offers);
         })
@@ -65,8 +69,16 @@ router.get('/', (req, res) => {
 
 
 router.delete('/:id', (req, res) => {
-    res.json('success ' + req.params.id);
-    return res.status(200);
+    db.Offer.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+        .then((offer) => {
+            res.json('success ' + req.params.id);
+        })
+        .catch(err => console.log(err));
+
 });
 
 module.exports = router;
