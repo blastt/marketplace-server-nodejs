@@ -54,6 +54,9 @@ router.get('/', (req, res) => {
             model: db.User,          
         },
         {
+            model: db.Order    
+        },
+        {
             model: db.Game,
             where: gameOptions
         }

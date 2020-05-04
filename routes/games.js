@@ -4,14 +4,14 @@ const db = require('../config/database');
 
 router.get('/', (req, res) => {
     db.Game.findAll()
-    .then(games => {
-        res.send(games)
-    })
-    .then(err => console.log(err))
+        .then(games => {
+            res.json(games)
+        })
+        .catch(err => console.log(err))
 })
 
 router.get('/:id', (req, res, next) => {
-    
+
     const gameId = req.params.id;
     if (isNaN(gameId)) {
         next();
@@ -21,12 +21,12 @@ router.get('/:id', (req, res, next) => {
             res.json(game);
         })
         .catch((err) => console.log(err));
-    
+
 });
 
 router.get('/:name', (req, res) => {
     const gamename = req.params.name;
-    db.Game.findOne({ where: { name: gamename } })
+    db.Game.findOne({ where: { value: gamename } })
         .then(game => {
             res.json(game);
         })
@@ -34,17 +34,29 @@ router.get('/:name', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-    let {name, value} = req.body;
+    let { name, value, rank } = req.body;
 
     db.Game.create({
         name,
-        value 
+        value,
+        rank
     })
-    .then((g) => {
-        res.redirect('/games');
-        console.log("game was created:" + g);
+        .then((game) => {
+            res.redirect('/games');
+        })
+        .catch(err => console.log(err));
+})
+
+router.delete('/:id', (req, res) => {
+    db.Game.destroy({
+        where: {
+            id: req.params.id
+        }
     })
-    .catch(err => console.log(err));
+        .then((game) => {
+            res.json(game);
+        })
+        .catch(err => console.log(err));
 })
 
 module.exports = router;

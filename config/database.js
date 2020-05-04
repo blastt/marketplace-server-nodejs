@@ -4,6 +4,7 @@ const UserModel = require('../models/User');
 const GameModel = require('../models/Game');
 const ImageModel = require('../models/Image');
 const OfferGameModel = require('../models/OfferGame');
+const OrderModel = require('../models/Order');
 
 const sequelize = new Sequelize('db_development', 'postgres', 'dijid82adssa', {
     host: 'localhost',
@@ -15,6 +16,7 @@ const User = UserModel(sequelize, Sequelize);
 const Game = GameModel(sequelize, Sequelize);
 const Image = ImageModel(sequelize, Sequelize);
 const OfferGame = OfferGameModel(sequelize, Sequelize);
+const Order = OrderModel(sequelize, Sequelize)
 
 Offer.belongsToMany(Game, { through: { model: OfferGame }});
 Game.belongsToMany(Offer, { through: { model: OfferGame }});
@@ -24,6 +26,12 @@ Game.belongsToMany(Offer, { through: { model: OfferGame }});
 // Game.hasMany(OfferGame);
 Offer.belongsTo(User);
 Image.belongsTo(Offer);
+Offer.hasOne(Order, {
+    foreignKey: {
+      allowNull: false
+    }
+  });
+Order.belongsTo(Offer);
 
 
 
@@ -177,6 +185,7 @@ sequelize.sync({ alter: true, force: true })
 
 module.exports = {
     Offer,
+    Order,
     User,
     Game,
     Image
