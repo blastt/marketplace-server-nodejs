@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
+const db = require('../models');
 const { check, validationResult } = require('express-validator');
 
 router.post('/add', (req, res) => {
     let { status, sum, amount, withdrawAmount, offerId } = req.body;
 
-    db.Order.create({ status, sum, amount, withdrawAmount, offerId })
+    db.order.create({ status, sum, amount, withdrawAmount, offerId })
         .then(order => {
             res.redirect('/offers');
         })
@@ -14,9 +14,9 @@ router.post('/add', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-    db.Order.findAll({
+    db.order.findAll({
         include: {
-            model: db.Offer
+            model: db.offer
         }
     })
         .then(offers => {

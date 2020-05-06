@@ -1,5 +1,5 @@
 module.exports = (db, Sequelize) => {
-    return db.define("offer", {
+    var Offer = db.define("offer", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -23,8 +23,25 @@ module.exports = (db, Sequelize) => {
         price: {
             type: Sequelize.DECIMAL
         }
-        
+
     }, {
         timestamps: false
     });
+
+    Offer.associate = models => {
+        Offer.belongsToMany(models.game, { through: { model: models.offer_game } });
+        Offer.belongsTo(models.user);
+        Offer.hasOne(models.order, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+        Offer.hasMany(models.image, {
+            as: 'images',
+            foreignKey: "offerId"
+        });
+    };
+
+
+    return Offer;
 }

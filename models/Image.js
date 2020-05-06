@@ -1,5 +1,5 @@
 module.exports = (db, Sequelize) => {
-    return db.define('image', {
+    var Image = db.define('image', {
         type: {
             type: Sequelize.STRING
         },
@@ -12,4 +12,9 @@ module.exports = (db, Sequelize) => {
     }, {
         timestamps: false
     });
+    Image.associate = models => {
+        Image.belongsTo(models.offer);
+    };
+
+    return Image;
 }

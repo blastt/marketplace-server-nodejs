@@ -1,5 +1,10 @@
 module.exports = (db, Sequelize) => {
-    return db.define("game", {
+    var Game = db.define("game", {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         name: {
             type: Sequelize.STRING
         },
@@ -12,4 +17,11 @@ module.exports = (db, Sequelize) => {
     }, {
         timestamps: false
     });
+    Game.associate = models => {
+        Game.belongsToMany(models.offer, { 
+            through: { model: models.offer_game }
+        });
+    };
+
+    return Game;
 } 

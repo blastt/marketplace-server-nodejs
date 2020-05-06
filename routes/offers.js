@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
+const db = require('../models');
 const { check, validationResult } = require('express-validator');
 
 
 
 router.get('/:id', (req, res, next) => {
-    db.Offer.findOne({
+    db.offer.findOne({
         where: { id: req.params.id },
         include: [
-            { model: db.User },
-            { model: db.Game }
+            { model: db.user },
+            { model: db.game }
         ]
     })
         .then(offer => {
@@ -26,9 +26,9 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/add', async (req, res) => {
     let { header, description, accountLogin, sellerPaysCharge, accountCreatedDate, price, games } = req.body;
-    let foundGames = await db.Game.findAll({ where: { value: games } })
+    let foundGames = await db.game.findAll({ where: { value: games } })
 
-    db.Offer.create({ header, description, accountLogin, sellerPaysCharge, accountCreatedDate, price, userId: 1 })
+    db.offer.create({ header, description, accountLogin, sellerPaysCharge, accountCreatedDate, price, userId: 1 })
         .then(offer => {
             let ids = foundGames.map((el) => el.id);
             offer.addGames(ids);
@@ -51,18 +51,18 @@ router.get('/', (req, res) => {
     }
     options.include = [
         {
-            model: db.User,          
+            model: db.user,          
         },
         {
-            model: db.Order    
+            model: db.order    
         },
         {
-            model: db.Game,
+            model: db.game,
             where: gameOptions
         }
     ]
     //const game = req.query.game;
-    db.Offer.findAll(options)
+    db.offer.findAll(options)
         .then(offers => {
             res.json(offers);
         })
@@ -72,7 +72,7 @@ router.get('/', (req, res) => {
 
 
 router.delete('/:id', (req, res) => {
-    db.Offer.destroy({
+    db.offer.destroy({
         where: {
             id: req.params.id
         }

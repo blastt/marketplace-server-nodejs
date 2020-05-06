@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
+const db = require('../models');
 
 router.get('/', (req, res) => {
-    db.Game.findAll()
+    db.game.findAll()
         .then(games => {
             res.json(games)
         })
@@ -16,7 +16,7 @@ router.get('/:id', (req, res, next) => {
     if (isNaN(gameId)) {
         next();
     }
-    db.Game.findOne({ where: { id: gameId } })
+    db.game.findOne({ where: { id: gameId } })
         .then(game => {
             res.json(game);
         })
@@ -26,7 +26,7 @@ router.get('/:id', (req, res, next) => {
 
 router.get('/:name', (req, res) => {
     const gamename = req.params.name;
-    db.Game.findOne({ where: { value: gamename } })
+    db.game.findOne({ where: { value: gamename } })
         .then(game => {
             res.json(game);
         })
@@ -36,7 +36,7 @@ router.get('/:name', (req, res) => {
 router.post('/add', (req, res) => {
     let { name, value, rank } = req.body;
 
-    db.Game.create({
+    db.game.create({
         name,
         value,
         rank
@@ -48,7 +48,7 @@ router.post('/add', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-    db.Game.destroy({
+    db.game.destroy({
         where: {
             id: req.params.id
         }

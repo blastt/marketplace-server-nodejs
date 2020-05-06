@@ -1,12 +1,9 @@
 module.exports = (db, Sequelize) => {
-    return db.define("user", {
+    let User = db.define("user", {
         username: {
             type: Sequelize.STRING
         },
         email: {
-            type: Sequelize.STRING
-        },
-        login: {
             type: Sequelize.STRING
         },
         password: {
@@ -16,4 +13,14 @@ module.exports = (db, Sequelize) => {
     }, {
         timestamps: false
     });
+
+    User.associate = models => {
+        User.hasMany(models.offer, {
+            as: 'offers',
+            foreignKey: 'userId'
+        });
+    };
+
+
+    return User;
 }
