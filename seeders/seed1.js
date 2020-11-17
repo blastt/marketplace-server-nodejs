@@ -104,7 +104,7 @@ module.exports = function(db) {
         },
         {
             //id: 7,
-            header: 'Pulya dura',
+            header: 'ppp',
             description: 'Descr254',
             accountLogin: 'example22',
             sellerPaysCharge: true,
