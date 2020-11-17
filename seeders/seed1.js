@@ -30,15 +30,15 @@ module.exports = function(db) {
         rank: 3
     }
     
-    const gamePulyaDura = {
+    const gamePpp = {
         //id: 4,
-        name: "Pulya Dura",
-        value: "pulyadura",
+        name: "Ppp",
+        value: "ppp",
         rank: 4
     
     }
     
-    let games = [gameCsgo, gameDota2, gameValorant, gamePulyaDura];
+    let games = [gameCsgo, gameDota2, gameValorant, gamePpp];
     
     let offers = [
     
